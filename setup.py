@@ -26,7 +26,7 @@ setup(
     python_requires=">=3.8",
     author="PNPL",
     author_email="",
-    url="https://github.com/yourusername/pnpl",  # Update with actual URL
+    url="https://github.com/September-Labs/pnpl",
     license="MIT",
     classifiers=[
         "Development Status :: 3 - Alpha",

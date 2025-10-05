@@ -17,19 +17,19 @@ A high-performance Python library for loading and preprocessing MEG (Magnetoence
 ### Install from GitHub
 
 ```bash
-pip install git+https://github.com/yourusername/pnpl.git
+pip install git+https://github.com/September-Labs/pnpl.git
 ```
 
 ### Install with preprocessing support
 
 ```bash
-pip install "pnpl[preprocessing] @ git+https://github.com/yourusername/pnpl.git"
+pip install "pnpl[preprocessing] @ git+https://github.com/September-Labs/pnpl.git"
 ```
 
 ### Development installation
 
 ```bash
-git clone https://github.com/yourusername/pnpl.git
+git clone https://github.com/September-Labs/pnpl.git
 cd pnpl
 pip install -e ".[dev]"
 ```
@@ -177,7 +177,7 @@ If you use this library in your research, please cite:
 @software{pnpl2024,
   title = {PNPL: MEG Data Loading Library},
   year = {2024},
-  url = {https://github.com/yourusername/pnpl}
+  url = {https://github.com/September-Labs/pnpl}
 }
 ```
 
