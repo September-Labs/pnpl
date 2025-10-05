@@ -138,22 +138,6 @@ The LibriBrain dataset can be:
 
 When using the preprocessing script, provide the root path where your LibriBrain data is stored (or where you want it to be downloaded).
 
-### Preprocessing FIF Files to HDF5
-
-```python
-from pnpl.datasets.libribrain2025.preprocess import fif2h5
-
-# Convert a single FIF file to HDF5
-fif2h5(
-    fif_file="/path/to/data.fif",
-    dtype=np.float32,  # Optional: convert to float32 for smaller files
-    output_dir="/path/to/output",
-    chunk_size=50,
-    compression="gzip",
-    compression_opts=4
-)
-```
-
 ### Loading Competition Holdout Data
 
 ```python
@@ -167,41 +151,6 @@ holdout_dataset = LibriBrainCompetitionHoldout(
     tmax=0.5
 )
 ```
-
-## Dataset Structure
-
-The library expects data to be organized in the following structure:
-
-```
-data_path/
-├── train/
-│   ├── subject_01/
-│   │   ├── run_01.h5
-│   │   ├── run_02.h5
-│   │   └── ...
-│   └── ...
-├── validation/
-└── test/
-```
-
-## API Reference
-
-### Core Classes
-
-- `LibriBrainPhoneme`: Dataset for phoneme classification task
-- `LibriBrainSpeech`: Dataset for speech detection task
-- `LibriBrainCompetitionHoldout`: Dataset for competition evaluation
-- `GroupedDataset`: Dataset wrapper for grouping and averaging samples
-- `HDF5Dataset`: Base class for HDF5-based datasets
-
-### Key Parameters
-
-- `data_path`: Root directory for dataset storage
-- `partition`: Data split ("train", "validation", "test")
-- `tmin`, `tmax`: Time window for MEG data extraction
-- `preprocessing_str`: Preprocessing pipeline configuration
-- `standardize`: Apply channel-wise standardization
-- `download`: Auto-download from Hugging Face Hub
 
 ## Requirements
 
