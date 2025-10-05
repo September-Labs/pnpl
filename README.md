@@ -2,14 +2,27 @@
 
 A high-performance Python library for loading and preprocessing MEG (Magnetoencephalography) data, with specialized support for the LibriBrain 2025 competition datasets.
 
-## Features
+## Key Features
 
-- **HDF5-based data loading**: Efficient loading of preprocessed MEG data from HDF5 files
-- **Dataset grouping and averaging**: Group multiple samples by label with configurable averaging
+### Preprocessing for Fast Data Loading
+The main contribution of this library is the ability to preprocess and group samples in advance, resulting in much faster data loading during model training. Instead of grouping samples in real-time (which can be slow), you can preprocess your data once and then load it quickly during training.
+
+```bash
+# Step 1: Preprocess data once (groups samples and saves to HDF5)
+python scripts/preprocess_libribrain.py --data-path /path/to/libribrain --grouped-samples 100
+
+# Step 2: Load preprocessed data in your training code (much faster!)
+from pnpl.datasets import GroupedDataset
+train_dataset = GroupedDataset(preprocessed_path="./preprocessed_data/train_grouped.h5")
+```
+
+The preprocessing script supports configurable group sizes (e.g., 10, 30, 100 samples) and parallel processing for efficiency.
+
+### Additional Features
+
 - **LibriBrain competition support**: Built-in support for LibriBrain 2025 phoneme and speech datasets
-- **Preprocessing pipeline**: Convert raw FIF files to optimized HDF5 format
 - **Flexible data handling**: Support for various preprocessing configurations and standardization options
-- **Memory-efficient loading**: Options for memory mapping and SWMR (Single Writer Multiple Readers) mode
+- **Memory-efficient loading**: Options for memory mapping and loading to memory
 - **Hugging Face integration**: Automatic dataset downloading from Hugging Face Hub
 
 ## Installation
@@ -36,7 +49,43 @@ pip install -e ".[dev]"
 
 ## Quick Start
 
-### Loading LibriBrain Phoneme Dataset
+### Preprocessing Workflow (Recommended)
+
+For the best performance, preprocess your LibriBrain data once, then use the preprocessed files for training:
+
+```bash
+# 1. Preprocess all partitions with 100-sample grouping
+python scripts/preprocess_libribrain.py \
+    --data-path /path/to/libribrain \
+    --grouped-samples 100 \
+    --output-dir ./preprocessed_data
+
+# 2. Or preprocess specific partitions with custom settings
+python scripts/preprocess_libribrain.py \
+    --data-path /path/to/libribrain \
+    --grouped-samples 30 \
+    --partitions train validation \
+    --num-workers 8
+```
+
+Then in your training code:
+
+```python
+from pnpl.datasets import GroupedDataset
+
+# Load preprocessed data (fast!)
+train_dataset = GroupedDataset(
+    preprocessed_path="./preprocessed_data/train_grouped.h5",
+    load_to_memory=True  # Optional: load entire dataset to memory
+)
+
+val_dataset = GroupedDataset(
+    preprocessed_path="./preprocessed_data/validation_grouped.h5",
+    load_to_memory=True
+)
+```
+
+### Standard Loading (Without Preprocessing)
 
 ```python
 from pnpl.datasets import LibriBrainPhoneme
@@ -57,31 +106,37 @@ meg_data = sample['meg']  # Shape: (channels, time)
 phoneme = sample['phoneme']  # Phoneme label
 ```
 
-### Using GroupedDataset for Averaging
+### How to Use Both Workflows
 
 ```python
 from pnpl.datasets import GroupedDataset, LibriBrainPhoneme
 
-# Create base dataset
+# Option 1: Real-time grouping (slower)
 base_dataset = LibriBrainPhoneme(
-    data_path="/path/to/data",
+    data_path="/path/to/libribrain",  # Your LibriBrain data path
     partition="train"
 )
-
-# Group and average 10 samples
 grouped_dataset = GroupedDataset(
     original_dataset=base_dataset,
-    grouped_samples=10,
+    grouped_samples=100,
     average_grouped_samples=True,
     shuffle=True
 )
 
-# Or load preprocessed grouped data
+# Option 2: Load preprocessed data (much faster - recommended!)
 grouped_dataset = GroupedDataset(
-    preprocessed_path="/path/to/grouped_data.h5",
+    preprocessed_path="./preprocessed_data/train_grouped.h5",
     load_to_memory=True
 )
 ```
+
+### Data Path Notes
+
+The LibriBrain dataset can be:
+1. **Downloaded automatically** from HuggingFace (stored in HF cache: `~/.cache/huggingface/hub/`)
+2. **Provided locally** at a path you specify with `--data-path`
+
+When using the preprocessing script, provide the root path where your LibriBrain data is stored (or where you want it to be downloaded).
 
 ### Preprocessing FIF Files to HDF5
 
