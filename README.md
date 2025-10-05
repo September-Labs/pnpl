@@ -132,11 +132,17 @@ grouped_dataset = GroupedDataset(
 
 ### Data Path Notes
 
-The LibriBrain dataset can be:
-1. **Downloaded automatically** from HuggingFace (stored in HF cache: `~/.cache/huggingface/hub/`)
-2. **Provided locally** at a path you specify with `--data-path`
+When using LibriBrain datasets, the `data_path` parameter specifies where the data will be stored locally.
+If the data doesn't exist at that path, it will be automatically downloaded from HuggingFace and organized in the proper structure.
 
-When using the preprocessing script, provide the root path where your LibriBrain data is stored (or where you want it to be downloaded).
+Example:
+```bash
+# First time: data will be downloaded to /data/libribrain/
+python scripts/preprocess_libribrain.py --data-path /data/libribrain --grouped-samples 100
+
+# Subsequent runs: will use the already downloaded data
+python scripts/preprocess_libribrain.py --data-path /data/libribrain --grouped-samples 30
+```
 
 ### Loading Competition Holdout Data
 
