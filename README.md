@@ -184,9 +184,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you use this library in your research, please cite:
 
 ```bibtex
-@software{pnpl2024,
+@software{pnpl2025,
   title = {PNPL: MEG Data Loading Library},
-  year = {2024},
+  year = {2025},
   url = {https://github.com/September-Labs/pnpl}
 }
 ```
