@@ -9,7 +9,7 @@ setup(
     long_description=open("README.md").read() if os.path.exists("README.md") else "",
     long_description_content_type="text/markdown",
     package_dir={"pnpl": "."},
-    packages=["pnpl"] + ["pnpl." + pkg for pkg in find_packages()],
+    packages=["pnpl", "pnpl.datasets", "pnpl.datasets.hdf5", "pnpl.datasets.libribrain2025", "pnpl.scripts"],
     install_requires=[
         "torch>=2.0.0",
         "numpy>=1.24.0",
