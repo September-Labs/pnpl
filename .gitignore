@@ -142,7 +142,7 @@ dmypy.json
 *.fif
 *.fif.gz
 data/
-datasets/
+# datasets/  # Commented out - datasets folder contains source code
 
 # Claude-specific
 .claude/
