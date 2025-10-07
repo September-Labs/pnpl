@@ -52,7 +52,7 @@ dev = [
 ]
 
 [tool.setuptools]
-packages = ["pnpl", "pnpl.datasets", "pnpl.datasets.hdf5", "pnpl.datasets.libribrain2025"]
+packages = ["pnpl", "pnpl.datasets", "pnpl.datasets.hdf5", "pnpl.datasets.libribrain2025", "pnpl.scripts"]
 package-dir = {"pnpl" = "."}
 
 [tool.black]
